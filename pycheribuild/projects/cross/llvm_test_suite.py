@@ -43,7 +43,7 @@ from .llvm import BuildCheriLLVM, BuildLLVMBase, BuildUpstreamLLVM
 from ..project import ReuseOtherProjectRepository
 from ..simple_project import BoolConfigOption
 from ...config.compilation_targets import FreeBSDTargetInfo
-from ...utils import classproperty, is_jenkins_build
+from ...utils import is_jenkins_build
 
 
 class BuildLLVMTestSuiteBase(BenchmarkMixin, CrossCompileCMakeProject):

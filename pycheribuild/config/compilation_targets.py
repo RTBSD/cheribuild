@@ -130,7 +130,8 @@ class _ClangBasedTargetInfo(TargetInfo, ABC):
 
     @classmethod
     def toolchain_targets(cls, target: "CrossCompileTarget", config: "CheriConfig") -> "list[str]":
-        return [cls._get_compiler_project(config).get_class_for_target(BasicCompilationTargets.NATIVE_NON_PURECAP).target]
+        return [cls._get_compiler_project(config).get_class_for_target(
+                BasicCompilationTargets.NATIVE_NON_PURECAP).target]
 
     def _rootfs_path(self) -> Path:
         xtarget = self.target.get_rootfs_target()

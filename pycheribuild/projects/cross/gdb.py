@@ -293,6 +293,7 @@ class BuildGDB(BuildGDBBase):
         old_urls=[b"https://github.com/bsdjhb/gdb.git"],
     )
 
+
 class BuildCheriAllianceGDB(BuildGDBBase):
     target = "cheri-alliance-gdb"
     native_install_dir = DefaultInstallDir.CHERI_ALLIANCE_SDK
@@ -305,6 +306,7 @@ class BuildCheriAllianceGDB(BuildGDBBase):
         CompilationTargets.CHERIBSD_RISCV_HYBRID_FOR_PURECAP_ROOTFS,
         CompilationTargets.NATIVE_NON_PURECAP,
     )
+
 
 class BuildKGDB(BuildGDB):
     default_branch = "cheri-14-kgdb"

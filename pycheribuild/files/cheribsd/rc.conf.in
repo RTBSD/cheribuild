@@ -1,6 +1,7 @@
 hostname="{hostname}"
+ifconfig_lo0="inet 127.0.0.1"
 ifconfig_le0="DHCP"  # use DHCP on the standard QEMU usermode nic (MIPS)
-ifconfig_em0="DHCP"  # use DHCP on the standard QEMU usermode nic (x86)
+#ifconfig_em0="DHCP"  # use DHCP on the standard QEMU usermode nic (x86)
 ifconfig_DEFAULT="DHCP"  # use DHCP on the default interface
 ifconfig_atse0="polling DHCP"  # For the default fpga interface we need polling mode
 background_dhclient="no"  # launch dhclient in the background (hope it doesn't break sshd)
@@ -16,3 +17,16 @@ nfs_client_enable="YES"
 fsck_y_enable="YES"
 fsck_y_flags="-T ffs:-R -T ufs:-R"
 crashinfo_enable=NO	# gdb runs for 5+ minutes on F1 if present...
+
+ifconfig_cgem0="inet 192.168.4.20 netmask 255.255.255.0"
+defaultrouter="192.168.4.30"
+
+## RTL8188EU USB Wifi
+wlans_rtwn0="wlan0"
+ifconfig_wlan0="WPA SYNCDHCP"
+create_args_wlan0="country CN regdomain NONE"
+
+## RTL8852BE PCIe Wifi
+#wlans_rtw890="wlan0"
+#ifconfig_wlan0="WPA SYNCDHCP"
+#create_args_wlan0="country CN regdomain NONE"

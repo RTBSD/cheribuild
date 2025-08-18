@@ -110,6 +110,14 @@ class _AdditionalFileTemplates:
     def get_dot_bash_profile_template(self):
         return include_local_file("files/cheribsd/dot.bash_profile.in")
 
+    def get_loader_conf_template(self):
+        return include_local_file("files/cheribsd/loader.conf.in")
+
+    def get_resolv_conf_template(self):
+        return include_local_file("files/cheribsd/resolv.conf.in")
+
+    def get_wpa_supplicant_conf_template(self):
+        return include_local_file("files/cheribsd/wpa_supplicant.conf.in")
 
 def _default_disk_image_name(_: CheriConfig, directory: Path, project: "BuildDiskImageBase"):
     if project.use_qcow2:
@@ -391,6 +399,16 @@ class BuildDiskImageBase(SimpleProject):
             "/etc/rc.conf", contents=rc_conf_contents, mode=0o644, show_contents_non_verbose=False
         )
 
+        resolv_conf_contents = self.file_templates.get_resolv_conf_template()
+        self.create_file_for_image(
+            "/etc/resolv.conf", contents=resolv_conf_contents, mode=0o644, show_contents_non_verbose=False
+        )
+
+        wpa_supplicant_conf_contents = self.file_templates.get_wpa_supplicant_conf_template()
+        self.create_file_for_image(
+            "/etc/wpa_supplicant.conf", contents=wpa_supplicant_conf_contents, mode=0o644, show_contents_non_verbose=False
+        )
+
         cshrc_contents = self.file_templates.get_cshrc_template().format(
             SRCPATH=self.config.source_root, ROOTFS_DIR=self.rootfs_dir
         )
@@ -537,7 +555,7 @@ class BuildDiskImageBase(SimpleProject):
                         self.run_cmd("chmod", "0700", authorized_keys.parent.parent, authorized_keys.parent)
                         self.run_cmd("chmod", "0600", authorized_keys)
 
-        loader_conf_contents = ""
+        loader_conf_contents = self.file_templates.get_loader_conf_template()
         if self.is_x86:
             loader_conf_contents += 'console="comconsole"\nautoboot_delay=0\n'
         if self.no_autoboot:
@@ -733,6 +751,20 @@ class BuildDiskImageBase(SimpleProject):
             if efi_partition is not None:
                 self.delete_file(efi_partition)  # no need to keep the partition now that we have built the full image
 
+    def copy_dtb_in_makefs(self, efi_mtree, vendor, dtb_name):
+        efi_mtree.add_file(
+            self.rootfs_dir / "boot" / "dtb" / vendor / dtb_name, path_in_image="efi/boot/" + dtb_name, mode=0o644
+        )
+
+    def copy_dtb_in_mtools(self, mtools_bin, efi_partition, efi_file, vendor, dtb_name):
+        self.run_cmd(
+            mtools_bin / "mcopy",
+            "-i",
+            efi_partition,
+            self.rootfs_dir / "boot" / "dtb" / vendor / dtb_name,
+            "::/EFI/BOOT/" + efi_file.upper(),
+        )
+
     def make_efi_partition(self, efi_partition: Path):
         # See Table 15. UEFI Image Types, UEFI spec v2.8 (Errata B)
         efi_machine_type_short_names = {
@@ -758,6 +790,7 @@ class BuildDiskImageBase(SimpleProject):
                 efi_mtree.add_file(
                     self.rootfs_dir / "boot" / loader_file, path_in_image="efi/boot/" + efi_file.lower(), mode=0o644
                 )
+                self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_pi_v2.dtb")
                 efi_mtree.write(tmp_mtree, pretend=self.config.pretend)
                 tmp_mtree.flush()  # ensure the file is actually written
                 self.run_cmd("cat", tmp_mtree.name)
@@ -796,6 +829,7 @@ class BuildDiskImageBase(SimpleProject):
                     self.rootfs_dir / "boot" / loader_file,
                     "::/EFI/BOOT/" + efi_file.upper(),
                 )
+                self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_pi_v2.dtb")
             if (mtools_bin / "minfo").exists():
                 # Get some information about the created image information:
                 self.run_cmd(mtools_bin / "minfo", "-i", efi_partition)

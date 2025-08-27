@@ -19,6 +19,7 @@ fsck_y_flags="-T ffs:-R -T ufs:-R"
 crashinfo_enable=NO	# gdb runs for 5+ minutes on F1 if present...
 
 ifconfig_cgem0="inet 192.168.4.20 netmask 255.255.255.0"
+ifconfig_gmac0="inet 192.168.4.20 netmask 255.255.255.0"
 defaultrouter="192.168.4.30"
 
 ## RTL8188EU USB Wifi

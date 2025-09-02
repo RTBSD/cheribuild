@@ -790,6 +790,7 @@ class BuildDiskImageBase(SimpleProject):
                 efi_mtree.add_file(
                     self.rootfs_dir / "boot" / loader_file, path_in_image="efi/boot/" + efi_file.lower(), mode=0o644
                 )
+                self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_dsk_v3.dtb")
                 self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_pi_v2.dtb")
                 self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_dsk_v1.dtb")
                 efi_mtree.write(tmp_mtree, pretend=self.config.pretend)
@@ -830,6 +831,7 @@ class BuildDiskImageBase(SimpleProject):
                     self.rootfs_dir / "boot" / loader_file,
                     "::/EFI/BOOT/" + efi_file.upper(),
                 )
+                self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_dsk_v3.dtb")
                 self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_pi_v2.dtb")
                 self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_dsk_v1.dtb")
             if (mtools_bin / "minfo").exists():

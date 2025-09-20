@@ -1,4 +1,4 @@
 network={
-ssid="rtbsd"
-psk="rtbsd250818"
+ssid="phytium_net"
+psk="phytium-net"
 }

@@ -8,19 +8,23 @@
 #hw.uart.console="dt:pl011,mm:0x2800d000,rs:2,br:115200,xo:100000000,sb:1,rw:4"
 #hw.uart.dbgport="dt:pl011,mm:0x2800e000,rs:2,br:115200,xo:100000000,sb:1,rw:4"
 #   FreeBSD 14.3
-#hw.uart.console="dt:uart_pl011,mm:0x2800d000,rs:2,br:115200,xo:100000000,sb:1"
-#hw.uart.dbgport="dt:uart_pl011,mm:0x2800e000,rs:2,br:115200,xo:100000000,sb:1"
+hw.uart.console="dt:uart_pl011,mm:0x2800d000,rs:2,br:115200,xo:100000000,sb:1"
+hw.uart.dbgport="dt:uart_pl011,mm:0x2800e000,rs:2,br:115200,xo:100000000,sb:1"
 
 # Firefly dsk v3
 #   FreeBSD 14.3
-hw.uart.console="dt:uart_pl011,mm:0x28009000,rs:2,br:115200,xo:100000000,sb:1"
-hw.uart.dbgport="dt:uart_pl011,mm:0x2800a000,rs:2,br:115200,xo:100000000,sb:1"
+#hw.uart.console="dt:uart_pl011,mm:0x28009000,rs:2,br:115200,xo:100000000,sb:1"
+#hw.uart.dbgport="dt:uart_pl011,mm:0x2800a000,rs:2,br:115200,xo:100000000,sb:1"
 
 # Firefly dsk v4
 #   FreeBSD 14.3
 #hw.uart.console="dt:uart_pl011,mm:0x18002000,rs:2,br:115200,xo:100000000,sb:1"
 
 compat.linuxkpi.skb.mem_limit=1
+
+# disable SMP
+#kern.smp.disabled=1
+#hw.pci.realloc_bars=1
 
 # override loaded dtb
 #hint.acpi.0.disabled=1

@@ -794,6 +794,7 @@ class BuildDiskImageBase(SimpleProject):
                 self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_pi_v2.dtb")
                 self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_dsk_v2.dtb")
                 self.copy_dtb_in_makefs(efi_mtree, "firefly", "firefly_dsk_v1.dtb")
+                self.copy_dtb_in_makefs(efi_mtree, "rockchip", "rk3399-emb3531.dtb")
                 efi_mtree.write(tmp_mtree, pretend=self.config.pretend)
                 tmp_mtree.flush()  # ensure the file is actually written
                 self.run_cmd("cat", tmp_mtree.name)
@@ -836,6 +837,7 @@ class BuildDiskImageBase(SimpleProject):
                 self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_pi_v2.dtb")
                 self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_dsk_v2.dtb")
                 self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "firefly", "firefly_dsk_v1.dtb")
+                self.copy_dtb_in_mtools(mtools_bin, efi_partition, efi_file, "rockchip", "rk3399-emb3531.dtb")
             if (mtools_bin / "minfo").exists():
                 # Get some information about the created image information:
                 self.run_cmd(mtools_bin / "minfo", "-i", efi_partition)
